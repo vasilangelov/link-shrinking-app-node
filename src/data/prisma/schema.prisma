@@ -1,0 +1,40 @@
+datasource db {
+    provider = "sqlite"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+model User {
+    id                 Int        @id() @default(autoincrement())
+    email              String     @unique
+    passwordHash       String
+    profilePicturePath String?
+    firstName          String
+    lastName           String
+    userLinks          UserLink[]
+}
+
+model LinkProvider {
+    id              Int        @id @default(autoincrement())
+    iconName        String
+    name            String
+    backgroundColor String
+    textColor       String
+    allowedDomains  String
+    usersWithLink   UserLink[]
+}
+
+model UserLink {
+    userId         Int
+    user           User         @relation(fields: [userId], references: [id])
+    linkProviderId Int
+    linkProvider   LinkProvider @relation(fields: [linkProviderId], references: [id])
+    order          Int
+    link           String
+
+    @@id([userId, linkProviderId])
+    @@unique([userId, linkProviderId, order])
+}
