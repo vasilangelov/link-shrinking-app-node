@@ -1,5 +1,6 @@
 node_modules
-
 database
+src/public
+!src/public/icons/*
 
 .env
