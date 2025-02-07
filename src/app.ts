@@ -1,3 +1,4 @@
+import cors from "cors";
 import express from "express";
 import path from "path";
 
@@ -6,14 +7,16 @@ import { HTTPStatusCode } from "@/constants/http";
 import seedDatabase from "@/data/seeders";
 import { passport } from "@/services/auth";
 
+import apiDocsRouter from "@/controllers/api-docs";
 import authRouter from "@/controllers/auth";
+import linkProvidersRouter from "@/controllers/link-providers";
 import profileRouter from "@/controllers/profile";
 import linksRouter from "@/controllers/user-links";
-import linkProvidersRouter from "@/controllers/link-providers";
-import apiDocsRouter from "@/controllers/api-docs";
 
 async function setupServer() {
   const app = express();
+
+  app.use(cors());
 
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
